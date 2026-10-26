@@ -117,6 +117,12 @@ hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 <a class="l3" href="#81-生成の前後の安全チェック">8.1 生成の前後の安全チェック</a>
 <a class="l3" href="#82-不適切な結果の報告">8.2 不適切な結果の報告</a>
 <a class="l2" href="#9-困ったときは">9. 困ったときは</a>
+<a class="l2" href="#付録-apiキーの取得">付録. APIキーの取得</a>
+<a class="l3" href="#apiキーとは">APIキーとは</a>
+<a class="l3" href="#取得の手順">取得の手順</a>
+<a class="l3" href="#無料枠と有料枠">無料枠と有料枠</a>
+<a class="l3" href="#注意">注意</a>
+<a class="l3" href="#うまくいかないとき">うまくいかないとき</a>
 </nav>
 <main>
 <h1>CharaRig 操作説明書</h1>
@@ -165,6 +171,12 @@ hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 <a class="l3" href="#81-生成の前後の安全チェック">8.1 生成の前後の安全チェック</a>
 <a class="l3" href="#82-不適切な結果の報告">8.2 不適切な結果の報告</a>
 <a class="l2" href="#9-困ったときは">9. 困ったときは</a>
+<a class="l2" href="#付録-apiキーの取得">付録. APIキーの取得</a>
+<a class="l3" href="#apiキーとは">APIキーとは</a>
+<a class="l3" href="#取得の手順">取得の手順</a>
+<a class="l3" href="#無料枠と有料枠">無料枠と有料枠</a>
+<a class="l3" href="#注意">注意</a>
+<a class="l3" href="#うまくいかないとき">うまくいかないとき</a>
 </nav>
 <h2 id="1-はじめに初回起動とapiキーの設定">1. はじめに（初回起動とAPIキーの設定）</h2>
 <h3 id="11-ご利用にあたっての同意">1.1 ご利用にあたっての同意</h3>
@@ -179,7 +191,7 @@ hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 <p>同じ内容は、あとから設定画面の「利用上の注意」でも確認できます。</p>
 <h3 id="12-apiキーの設定">1.2 APIキーの設定</h3>
 <ol>
-<li>Google AI Studio（https://aistudio.google.com/apikey ）でAPIキーを取得します（無料。手順は別紙「APIキー取得ガイド」）</li>
+<li>Google AI Studio（https://aistudio.google.com/apikey）でAPIキーを取得します（無料・約5分。手順は「<a href="#付録-apiキーの取得">付録. APIキーの取得</a>」）</li>
 <li>ホーム画面右上の ⚙️ で設定画面を開きます（APIキーが未設定なら、起動時に「設定へ」の案内も出ます）</li>
 <li>「接続先」が <strong>Gemini API (AI Studio)</strong> になっていることを確認し、「APIキー」欄に貼り付けます</li>
 <li>右上の「保存」を押します</li>
@@ -469,6 +481,42 @@ hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 <h2 id="9-困ったときは">9. 困ったときは</h2>
 <div class="table"><table><thead><tr><th>症状</th><th>対処</th></tr></thead><tbody><tr><td>起動時に「WindowsによってPCが保護されました」と出る</td><td>「詳細情報」→「実行」で起動できます（別紙「起動時の警告への案内」）</td></tr><tr><td>「APIキーが設定されていません」</td><td>設定画面でAPIキーを入れて「保存」</td></tr><tr><td>「APIキーが無効か、アクセス権限がありません」</td><td>設定画面でAPIキーを確認してください（前後の空白などがないか）</td></tr><tr><td>「リクエスト制限に達しました」</td><td>利用量の上限（無料枠など）に達しました。しばらく待ってから試すか、有料枠を検討してください</td></tr><tr><td>「サーバーエラーが発生しました」</td><td>Google 側の一時的なエラーです。しばらく待ってから試してください</td></tr><tr><td>「リクエストが不正です」</td><td>指定した解像度や画像がモデルに合わない可能性があります。解像度を「標準」に戻す・画像を変えるなどして試してください</td></tr><tr><td>「エンドポイントまたはモデルが見つかりません」（Vertex AI）</td><td>リージョンを「global」にしてみてください</td></tr><tr><td>「エラーが発生しました: …」（SocketException など）</td><td>インターネット接続を確認してください</td></tr><tr><td>「利用できない表現が含まれています」</td><td>説明文・追加の指示から不適切と取られる表現を外してください</td></tr><tr><td>「安全フィルタにより生成されませんでした」</td><td>表現を変えて試してください（露出の多い衣装などで起きることがあります）</td></tr><tr><td>「画像を生成できませんでした」</td><td>説明やプロンプトを変えて、もう一度試してください</td></tr><tr><td>向きや足の前後が崩れる</td><td>設定画を作って使う／生成方式を「1コマずつ」にする／崩れたコマだけ「やり直す」</td></tr><tr><td>コマが隣のコマにはみ出す（行動）</td><td>「コマごとの調整」で、はみ出したコマを指示付きでやり直す（例: エフェクトを消す）</td></tr><tr><td>分割・透明化で背景の白が残る／キャラの白い部分まで消える</td><td>コマをクリックして拡大し、「抜く」「戻す」で手直ししてください（4.9）</td></tr><tr><td>ツクールで1マスに複数のキャラが表示される</td><td>「ツクール形式に変換」の赤い線で、1マスに1体ずつ入っているか確認してください</td></tr><tr><td>2K・4K を選んでも小さい画像が返る</td><td>使っているモデルが対応していない可能性があります（Vertex AI の一部のモデルなど）</td></tr><tr><td>無料版で「AI生成（10回）を使い切りました」</td><td>製品版をご購入ください。分割・透明化とツクール形式への変換は引き続き使えます</td></tr></tbody></table></div>
 <p>設定やログは <code>ドキュメント\CharaRig</code> フォルダにあります（自動チェックのログ: <code>logs\check_log.txt</code>）。</p>
+<hr>
+<h2 id="付録-apiキーの取得">付録. APIキーの取得</h2>
+<p>CharaRig で画像を生成するには、Google の APIキーが必要です。取得は<strong>無料</strong>で、<strong>約5分</strong>で終わります。</p>
+<h3 id="apiキーとは">APIキーとは</h3>
+<p>Google の画像生成AI（Gemini）を使うための「あなた専用の鍵」です。</p>
+<ul>
+<li>CharaRig はこの鍵を使って、<strong>あなたの Google アカウントから直接</strong>画像を生成します</li>
+<li>生成の回数や料金（有料枠を使う場合）は、すべてあなたと Google の間で完結します</li>
+<li>開発者が、あなたの鍵や生成した内容を見ることはありません</li>
+</ul>
+<h3 id="取得の手順">取得の手順</h3>
+<ol>
+<li>ブラウザで <strong>https://aistudio.google.com/apikey</strong> を開き、Google アカウントでログインします</li>
+<li>「APIキーを作成」（Create API key）を押します。プロジェクトの選択を求められたら、新しく作るか、そのまま進みます</li>
+<li><code>AIza</code> で始まる文字列が表示されます。これがあなたの APIキーです。コピーボタンでコピーします</li>
+<li>CharaRig を起動し、右上の ⚙️（設定）を開きます</li>
+<li>「接続先」が <strong>Gemini API (AI Studio)</strong> になっていることを確かめ、「APIキー」欄に貼り付けて、右上の「保存」を押します</li>
+</ol>
+<p>これで、ホーム画面から各機能が使えるようになります（設定画面は <a href="#12-apiキーの設定">1.2</a> の画像も参照）。</p>
+<h3 id="無料枠と有料枠">無料枠と有料枠</h3>
+<div class="table"><table><thead><tr><th></th><th>無料枠（最初はこちら）</th><th>有料枠</th></tr></thead><tbody><tr><td>料金</td><td>0円</td><td>生成1枚あたり数円〜十数円程度</td></tr><tr><td>制限</td><td>1日・1分あたりの生成回数に上限があります。混み合うと「リクエスト制限に達しました」が出やすくなります</td><td>上限が大きく緩和されます</td></tr><tr><td>送ったデータの扱い</td><td><strong>送ったプロンプトと画像が Google の AI の改善に使われ、人が確認することがあります</strong></td><td>学習には使われません</td></tr></tbody></table></div>
+<ul>
+<li><strong>まずは無料枠で十分です。</strong> 本格的に作るようになったら、Google AI Studio の課金設定（Billing）から有料枠に切り替えられます</li>
+<li>有料枠でも、キャラクター1体ぶんの素材一式で <strong>数十円〜百円程度</strong> が目安です（作り直しの回数や解像度で変わります）</li>
+<li>無料枠で、他人の顔写真など扱いに注意が必要な画像を使うのは避けてください（上のとおり Google に送られ、使われるため）</li>
+<li>欧州経済領域（EEA）・英国・スイスでは、無料枠が使えません（有料枠のみ）</li>
+</ul>
+<h3 id="注意">注意</h3>
+<ul>
+<li><strong>APIキーは他人に教えないでください。</strong> キーを知っている人は、あなたの枠（有料枠なら料金）で生成できてしまいます。SNS やスクリーンショットでの公開にも気をつけてください</li>
+<li>キーが漏れたときは、Google AI Studio でそのキーを削除し、新しいキーを作ってください</li>
+<li>性的・暴力的・差別的な画像や、実在の人物を偽る画像の生成は、Google のポリシーで禁止されています。<strong>違反する生成を繰り返すと、あなたの APIキーや Google アカウントが制限されることがあります</strong></li>
+</ul>
+<h3 id="うまくいかないとき">うまくいかないとき</h3>
+<div class="table"><table><thead><tr><th>症状</th><th>対処</th></tr></thead><tbody><tr><td>「APIキーが無効か、アクセス権限がありません」</td><td>キーの前後に余分な空白が入っていないか確かめ、キー全体（AIza〜）をコピーし直してください</td></tr><tr><td>「リクエスト制限に達しました」</td><td>無料枠の上限です。数分〜翌日まで待つか、有料枠への切り替えを検討してください</td></tr><tr><td>「エラーが発生しました: …」（SocketException など）</td><td>インターネット接続を確かめてください</td></tr><tr><td>「安全フィルタにより生成されませんでした」</td><td>Google の安全フィルタによるものです。表現を変えて試してください</td></tr></tbody></table></div>
+<p>解決しないときは、makeai.estake@gmail.com までご連絡ください。</p>
 </main>
 </div>
 </body>
