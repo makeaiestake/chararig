@@ -81,8 +81,10 @@ hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
 header.site { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
 header.site .brand { font-weight: 700; font-size: 20px; color: var(--accent); text-decoration: none; }
 header.site nav { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
-.hero h1 { font-size: 34px; margin-bottom: 4px; }
-.hero .subtitle { font-size: 18px; color: var(--muted); margin: 0 0 20px; }
+/* 題名は画像に入っているので、文字の見出しは読み上げ・検索用に隠す */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.key-visual { margin: 0 0 24px; }
+.key-visual img { border: none; border-radius: 12px; }
 .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 24px 0; }
 .links a { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); text-decoration: none; color: var(--text); }
 .links a strong { display: block; color: var(--accent); }
