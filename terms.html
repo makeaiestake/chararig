@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>利用規約 | CharaRig</title>
+<style>
+:root {
+  --bg: #ffffff; --text: #1f2328; --muted: #59636e; --line: #d1d9e0; --soft: #f6f8fa;
+  --accent: #6639ba; --accent-soft: #f3eefc; --code: #eff1f3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15131a; --text: #e6e3ec; --muted: #a8a2b3; --line: #39343f; --soft: #1e1b24;
+    --accent: #b99cf2; --accent-soft: #2a2236; --code: #26222c;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  font-size: 16px; line-height: 1.8;
+}
+.layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 1280px; margin: 0 auto; }
+nav.toc {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 28px 16px 28px 24px;
+  border-right: 1px solid var(--line); font-size: 14px; line-height: 1.6;
+}
+nav.toc .title { font-weight: 700; margin-bottom: 12px; color: var(--accent); }
+nav.toc a { display: block; color: var(--muted); text-decoration: none; padding: 3px 0; }
+nav.toc a:hover { color: var(--accent); }
+nav.toc a.l3 { padding-left: 14px; font-size: 13px; }
+main { padding: 28px 40px 80px; min-width: 0; }
+h1 { font-size: 30px; margin: 0 0 8px; color: var(--accent); }
+h2 { font-size: 23px; margin: 48px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+h3 { font-size: 19px; margin: 32px 0 8px; }
+h4 { font-size: 16px; margin: 24px 0 6px; }
+p, ul, ol { margin: 8px 0; }
+ul, ol { padding-left: 1.6em; }
+li { margin: 2px 0; }
+a { color: var(--accent); }
+code { background: var(--code); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; font-family: Consolas, monospace; }
+pre { background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote { margin: 12px 0; padding: 8px 16px; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; }
+.table { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--soft); }
+figure { margin: 16px 0 20px; }
+figure img, p img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; display: block; }
+figcaption { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
+.print-toc { display: none; }
+@media (max-width: 900px) {
+  .layout { display: block; }
+  nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 16px; }
+  main { padding: 20px 16px 60px; }
+  h1 { font-size: 24px; }
+}
+@media print {
+  :root { --bg: #fff; --text: #000; --muted: #444; --line: #ccc; --soft: #f4f4f4; --accent: #4b2a91; --accent-soft: #f3eefc; --code: #eee; }
+  @page { size: A4; margin: 16mm 14mm; }
+  body { font-size: 11pt; line-height: 1.65; }
+  .layout { display: block; }
+  nav.toc { display: none; }
+  .print-toc { display: block; margin-top: 8mm; padding-top: 4mm; border-top: 1px solid var(--line); font-size: 10.5pt; line-height: 1.5; columns: 2; column-gap: 10mm; }
+  .print-toc .title { font-weight: 700; color: var(--accent); margin-bottom: 2mm; column-span: all; }
+  .print-toc a { display: block; color: #000; text-decoration: none; padding: 1px 0; break-inside: avoid; }
+  .print-toc a.l3 { padding-left: 5mm; font-size: 9.5pt; }
+  main { padding: 0; }
+  h2 { break-before: page; margin-top: 0; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, blockquote { break-inside: avoid; }
+  figure img { max-height: 100mm; width: auto; max-width: 100%; }
+  a { color: #000; text-decoration: none; }
+}
+
+.page { max-width: 860px; margin: 0 auto; padding: 32px 16px 80px; }
+header.site { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline; padding-bottom: 12px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+header.site .brand { font-weight: 700; font-size: 20px; color: var(--accent); text-decoration: none; }
+header.site nav { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; }
+.hero h1 { font-size: 34px; margin-bottom: 4px; }
+.hero .subtitle { font-size: 18px; color: var(--muted); margin: 0 0 20px; }
+.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 24px 0; }
+.links a { display: block; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); text-decoration: none; color: var(--text); }
+.links a strong { display: block; color: var(--accent); }
+footer.site { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="page">
+<header class="site"><a class="brand" href="index.html">CharaRig</a><nav><a href="index.html">トップ</a><a href="manual/index.html">操作説明書</a><a href="terms.html">利用規約</a><a href="privacy.html">プライバシーポリシー</a></nav></header>
+<main><h1>利用規約</h1>
+<p><strong>最終更新日: 2026年10月26日</strong></p>
+<p>本規約は、Est-ake（以下「開発者」）が提供するソフトウェア「CharaRig」（以下「本ソフト」）の利用条件を定めるものです。本ソフトの利用をもって、本規約に同意したものとみなします。</p>
+<h3 id="第1条ライセンス">第1条（ライセンス）</h3>
+<ol>
+<li>購入者は、本ソフトを<strong>購入者本人の所有する端末</strong>にインストールし、利用することができます（本人利用に限る。Microsoft Store でご購入の場合は、Microsoft Store の利用条件で認められる台数まで）</li>
+<li>本ソフトの再配布・転売・貸与・リバースエンジニアリングを禁止します</li>
+<li>無料版は、どなたでも無償で利用できます（AI生成の回数に制限があります）</li>
+</ol>
+<h3 id="第2条生成物の権利と利用">第2条（生成物の権利と利用）</h3>
+<ol>
+<li>本ソフトを通じて生成された画像（スプライト等）は、<strong>商用・非商用を問わず、購入者が自由に利用できます</strong>（ゲーム作品への組み込み・販売を含む）</li>
+<li>生成物の権利関係は、Google Gemini API の利用規約に従います。開発者は生成物に対して権利を主張しません</li>
+<li>生成物を公開・販売する際、掲載先プラットフォームがAI生成コンテンツの明示を求める場合があります（例: Steamのゲーム登録時のAI開示）。その対応は購入者の責任で行ってください</li>
+<li>第三者の著作物・肖像を入力画像として使用する場合、必要な権利処理は購入者の責任で行ってください</li>
+</ol>
+<h3 id="第3条apiキーと外部サービス">第3条（APIキーと外部サービス）</h3>
+<ol>
+<li>本ソフトの画像生成には、購入者自身が取得した Google AI Studio のAPIキーが必要です</li>
+<li>APIキーの管理・APIの利用料金・Google の利用規約（Gemini API Additional Terms of Service / 生成AI禁止利用ポリシー）の遵守は、購入者の責任となります</li>
+<li>Google のサービス仕様・規約・料金の変更、およびそれに起因する本ソフトの機能停止について、開発者は責任を負いません</li>
+</ol>
+<h3 id="第4条禁止事項">第4条（禁止事項）</h3>
+<p>以下の目的での本ソフトの利用を禁止します:</p>
+<ol>
+<li>性的・暴力的・差別的なコンテンツ、児童の性的表象を含むコンテンツの生成</li>
+<li>実在の人物を本人の同意なく偽る・毀損するコンテンツの生成</li>
+<li>Google の生成AI禁止利用ポリシーに違反する行為（安全フィルタの回避の試みを含む）</li>
+<li>法令または公序良俗に違反する行為</li>
+</ol>
+<p><strong>違反する生成の試行を繰り返した場合、Googleにより購入者自身のAPIキー・Googleアカウントが制限される場合があります。</strong> これによる損害について開発者は責任を負いません。</p>
+<h3 id="第5条年齢制限">第5条（年齢制限）</h3>
+<p>本ソフトは、Gemini API の利用規約に基づき<strong>18歳以上</strong>の方を対象としています。</p>
+<h3 id="第6条免責">第6条（免責）</h3>
+<ol>
+<li>本ソフトは現状有姿で提供されます。生成結果の品質・特定目的への適合性は保証されません</li>
+<li>開発者は、本ソフトの利用または利用不能から生じた損害について、購入代金を超えて責任を負いません</li>
+<li>アップデート・サポートの提供は開発者の裁量によります</li>
+</ol>
+<h3 id="第7条規約の変更">第7条（規約の変更）</h3>
+<p>開発者は本規約を変更することがあります。変更後の規約は、配布ページまたはアプリ内での掲示をもって効力を生じます。</p></main>
+<footer class="site">© 2026 Est-ake　お問い合わせ: <a href="mailto:makeai.estake@gmail.com">makeai.estake@gmail.com</a></footer>
+</div>
+</body>
+</html>

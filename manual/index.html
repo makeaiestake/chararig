@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CharaRig 操作説明書</title>
+<style>
+:root {
+  --bg: #ffffff; --text: #1f2328; --muted: #59636e; --line: #d1d9e0; --soft: #f6f8fa;
+  --accent: #6639ba; --accent-soft: #f3eefc; --code: #eff1f3;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15131a; --text: #e6e3ec; --muted: #a8a2b3; --line: #39343f; --soft: #1e1b24;
+    --accent: #b99cf2; --accent-soft: #2a2236; --code: #26222c;
+  }
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: "Noto Sans JP", "Yu Gothic UI", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  font-size: 16px; line-height: 1.8;
+}
+.layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); max-width: 1280px; margin: 0 auto; }
+nav.toc {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 28px 16px 28px 24px;
+  border-right: 1px solid var(--line); font-size: 14px; line-height: 1.6;
+}
+nav.toc .title { font-weight: 700; margin-bottom: 12px; color: var(--accent); }
+nav.toc a { display: block; color: var(--muted); text-decoration: none; padding: 3px 0; }
+nav.toc a:hover { color: var(--accent); }
+nav.toc a.l3 { padding-left: 14px; font-size: 13px; }
+main { padding: 28px 40px 80px; min-width: 0; }
+h1 { font-size: 30px; margin: 0 0 8px; color: var(--accent); }
+h2 { font-size: 23px; margin: 48px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+h3 { font-size: 19px; margin: 32px 0 8px; }
+h4 { font-size: 16px; margin: 24px 0 6px; }
+p, ul, ol { margin: 8px 0; }
+ul, ol { padding-left: 1.6em; }
+li { margin: 2px 0; }
+a { color: var(--accent); }
+code { background: var(--code); padding: 1px 6px; border-radius: 4px; font-size: 0.9em; font-family: Consolas, monospace; }
+pre { background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+blockquote { margin: 12px 0; padding: 8px 16px; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; }
+.table { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { border: 1px solid var(--line); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--soft); }
+figure { margin: 16px 0 20px; }
+figure img, p img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; display: block; }
+figcaption { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+hr { border: none; border-top: 1px solid var(--line); margin: 32px 0; }
+.print-toc { display: none; }
+@media (max-width: 900px) {
+  .layout { display: block; }
+  nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 16px; }
+  main { padding: 20px 16px 60px; }
+  h1 { font-size: 24px; }
+}
+@media print {
+  :root { --bg: #fff; --text: #000; --muted: #444; --line: #ccc; --soft: #f4f4f4; --accent: #4b2a91; --accent-soft: #f3eefc; --code: #eee; }
+  @page { size: A4; margin: 16mm 14mm; }
+  body { font-size: 11pt; line-height: 1.65; }
+  .layout { display: block; }
+  nav.toc { display: none; }
+  .print-toc { display: block; margin-top: 8mm; padding-top: 4mm; border-top: 1px solid var(--line); font-size: 10.5pt; line-height: 1.5; columns: 2; column-gap: 10mm; }
+  .print-toc .title { font-weight: 700; color: var(--accent); margin-bottom: 2mm; column-span: all; }
+  .print-toc a { display: block; color: #000; text-decoration: none; padding: 1px 0; break-inside: avoid; }
+  .print-toc a.l3 { padding-left: 5mm; font-size: 9.5pt; }
+  main { padding: 0; }
+  h2 { break-before: page; margin-top: 0; }
+  h2, h3, h4 { break-after: avoid; }
+  figure, table, pre, blockquote { break-inside: avoid; }
+  figure img { max-height: 100mm; width: auto; max-width: 100%; }
+  a { color: #000; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc"><div class="title">目次</div>
+<a class="l2" href="#1-はじめに初回起動とapiキーの設定">1. はじめに（初回起動とAPIキーの設定）</a>
+<a class="l3" href="#11-ご利用にあたっての同意">1.1 ご利用にあたっての同意</a>
+<a class="l3" href="#12-apiキーの設定">1.2 APIキーの設定</a>
+<a class="l2" href="#2-画面の基本操作">2. 画面の基本操作</a>
+<a class="l3" href="#21-ホーム画面">2.1 ホーム画面</a>
+<a class="l3" href="#22-画面の並び">2.2 画面の並び</a>
+<a class="l3" href="#23-画面右上のボタン">2.3 画面右上のボタン</a>
+<a class="l3" href="#24-画像の読み込み">2.4 画像の読み込み</a>
+<a class="l3" href="#25-生成結果の操作">2.5 生成結果の操作</a>
+<a class="l2" href="#3-おすすめの作り方">3. おすすめの作り方</a>
+<a class="l3" href="#31-キャラクターのスプライト一式を作る">3.1 キャラクターのスプライト一式を作る</a>
+<a class="l3" href="#32-ツクールウディタ用の歩行グラフィックを作る">3.2 ツクール・ウディタ用の歩行グラフィックを作る</a>
+<a class="l2" href="#4-各機能の使い方">4. 各機能の使い方</a>
+<a class="l3" href="#41-キャラクター生成">4.1 キャラクター生成</a>
+<a class="l3" href="#42-設定画正面背面">4.2 設定画（正面・背面）</a>
+<a class="l3" href="#43-ピクセルアート化">4.3 ピクセルアート化</a>
+<a class="l3" href="#44-4方向直立画像">4.4 4方向直立画像</a>
+<a class="l3" href="#45-歩行スプライト">4.5 歩行スプライト</a>
+<a class="l3" href="#46-定型行動スプライト">4.6 定型行動スプライト</a>
+<a class="l3" href="#47-自由行動スプライト">4.7 自由行動スプライト</a>
+<a class="l3" href="#48-イベント画像生成">4.8 イベント画像生成</a>
+<a class="l3" href="#49-分割透明化aiなし">4.9 分割・透明化（AIなし）</a>
+<a class="l3" href="#410-ツクール形式に変換aiなし">4.10 ツクール形式に変換（AIなし）</a>
+<a class="l2" href="#5-どの画面にもある設定">5. どの画面にもある設定</a>
+<a class="l3" href="#51-スタイル画風">5.1 スタイル（画風）</a>
+<a class="l3" href="#52-オプション">5.2 オプション</a>
+<a class="l3" href="#53-プロンプトの確認編集製品版のみ">5.3 プロンプトの確認・編集（製品版のみ）</a>
+<a class="l3" href="#54-やり直しの追加の指示">5.4 やり直しの追加の指示</a>
+<a class="l3" href="#55-拡大表示での見比べ">5.5 拡大表示での見比べ</a>
+<a class="l3" href="#56-画風見本">5.6 画風見本</a>
+<a class="l2" href="#6-設定画面">6. 設定画面</a>
+<a class="l2" href="#7-無料版について">7. 無料版について</a>
+<a class="l2" href="#8-安全のための仕組みと報告">8. 安全のための仕組みと報告</a>
+<a class="l3" href="#81-生成の前後の安全チェック">8.1 生成の前後の安全チェック</a>
+<a class="l3" href="#82-不適切な結果の報告">8.2 不適切な結果の報告</a>
+<a class="l2" href="#9-困ったときは">9. 困ったときは</a>
+</nav>
+<main>
+<h1>CharaRig 操作説明書</h1>
+<p><strong>マネキンでポーズを決める、自作キャラのゲーム素材工房</strong></p>
+<p>自作キャラのイラストから、ゲーム用の素材（設定画・4方向の立ち絵・歩行・行動モーション・イベント画像）を段階的に作るツールです。 手足の位置や向きは、文章ではなく<strong>マネキン（灰色の人形）</strong>で指定します。 画像の生成には Google の画像生成AI（Gemini）を使います。生成結果は「手直し前提の下書き」として使ってください。</p>
+<ul>
+<li>対象バージョン: 1.0.0</li>
+<li>対応: Windows 10 / 11（64bit）。インターネット接続が必要です</li>
+<li>対象: 18歳以上の方</li>
+<li>無料版との違いは「<a href="#7-無料版について">無料版について</a>」を参照してください</li>
+</ul>
+<nav class="print-toc"><div class="title">目次</div>
+<a class="l2" href="#1-はじめに初回起動とapiキーの設定">1. はじめに（初回起動とAPIキーの設定）</a>
+<a class="l3" href="#11-ご利用にあたっての同意">1.1 ご利用にあたっての同意</a>
+<a class="l3" href="#12-apiキーの設定">1.2 APIキーの設定</a>
+<a class="l2" href="#2-画面の基本操作">2. 画面の基本操作</a>
+<a class="l3" href="#21-ホーム画面">2.1 ホーム画面</a>
+<a class="l3" href="#22-画面の並び">2.2 画面の並び</a>
+<a class="l3" href="#23-画面右上のボタン">2.3 画面右上のボタン</a>
+<a class="l3" href="#24-画像の読み込み">2.4 画像の読み込み</a>
+<a class="l3" href="#25-生成結果の操作">2.5 生成結果の操作</a>
+<a class="l2" href="#3-おすすめの作り方">3. おすすめの作り方</a>
+<a class="l3" href="#31-キャラクターのスプライト一式を作る">3.1 キャラクターのスプライト一式を作る</a>
+<a class="l3" href="#32-ツクールウディタ用の歩行グラフィックを作る">3.2 ツクール・ウディタ用の歩行グラフィックを作る</a>
+<a class="l2" href="#4-各機能の使い方">4. 各機能の使い方</a>
+<a class="l3" href="#41-キャラクター生成">4.1 キャラクター生成</a>
+<a class="l3" href="#42-設定画正面背面">4.2 設定画（正面・背面）</a>
+<a class="l3" href="#43-ピクセルアート化">4.3 ピクセルアート化</a>
+<a class="l3" href="#44-4方向直立画像">4.4 4方向直立画像</a>
+<a class="l3" href="#45-歩行スプライト">4.5 歩行スプライト</a>
+<a class="l3" href="#46-定型行動スプライト">4.6 定型行動スプライト</a>
+<a class="l3" href="#47-自由行動スプライト">4.7 自由行動スプライト</a>
+<a class="l3" href="#48-イベント画像生成">4.8 イベント画像生成</a>
+<a class="l3" href="#49-分割透明化aiなし">4.9 分割・透明化（AIなし）</a>
+<a class="l3" href="#410-ツクール形式に変換aiなし">4.10 ツクール形式に変換（AIなし）</a>
+<a class="l2" href="#5-どの画面にもある設定">5. どの画面にもある設定</a>
+<a class="l3" href="#51-スタイル画風">5.1 スタイル（画風）</a>
+<a class="l3" href="#52-オプション">5.2 オプション</a>
+<a class="l3" href="#53-プロンプトの確認編集製品版のみ">5.3 プロンプトの確認・編集（製品版のみ）</a>
+<a class="l3" href="#54-やり直しの追加の指示">5.4 やり直しの追加の指示</a>
+<a class="l3" href="#55-拡大表示での見比べ">5.5 拡大表示での見比べ</a>
+<a class="l3" href="#56-画風見本">5.6 画風見本</a>
+<a class="l2" href="#6-設定画面">6. 設定画面</a>
+<a class="l2" href="#7-無料版について">7. 無料版について</a>
+<a class="l2" href="#8-安全のための仕組みと報告">8. 安全のための仕組みと報告</a>
+<a class="l3" href="#81-生成の前後の安全チェック">8.1 生成の前後の安全チェック</a>
+<a class="l3" href="#82-不適切な結果の報告">8.2 不適切な結果の報告</a>
+<a class="l2" href="#9-困ったときは">9. 困ったときは</a>
+</nav>
+<h2 id="1-はじめに初回起動とapiキーの設定">1. はじめに（初回起動とAPIキーの設定）</h2>
+<h3 id="11-ご利用にあたっての同意">1.1 ご利用にあたっての同意</h3>
+<p>初めて起動すると「ご利用にあたって」が表示されます。内容を確認し、「18歳以上であり、上記および利用規約に同意します」にチェックを入れて「同意して開始」を押してください。主な内容は次のとおりです。</p>
+<ul>
+<li>生成には、ご自身で取得した Google AI Studio の APIキー（または Vertex AI の設定）が必要です</li>
+<li><strong>無料枠のAPIキーでは、送ったプロンプトと画像がGoogleのサービス改善に使われ、人が確認することがあります</strong>（有料枠・Vertex AI では使われません）</li>
+<li>入力する写真・イラストは、ご自身が権利を持つもの、または使用の許可を得たものに限ってください</li>
+<li>性的・暴力的・差別的な内容や、実在の人物を偽る内容の生成は禁止されています。不適切な生成を繰り返すと、<strong>ご自身のAPIキーやGoogleアカウントが制限される</strong>ことがあります</li>
+</ul>
+<figure><a href="images/01_agreement.png" target="_blank" rel="noopener"><img src="images/01_agreement.png" alt="初回起動時の「ご利用にあたって」" loading="lazy"></a><figcaption>初回起動時の「ご利用にあたって」</figcaption></figure>
+<p>同じ内容は、あとから設定画面の「利用上の注意」でも確認できます。</p>
+<h3 id="12-apiキーの設定">1.2 APIキーの設定</h3>
+<ol>
+<li>Google AI Studio（https://aistudio.google.com/apikey ）でAPIキーを取得します（無料。手順は別紙「APIキー取得ガイド」）</li>
+<li>ホーム画面右上の ⚙️ で設定画面を開きます（APIキーが未設定なら、起動時に「設定へ」の案内も出ます）</li>
+<li>「接続先」が <strong>Gemini API (AI Studio)</strong> になっていることを確認し、「APIキー」欄に貼り付けます</li>
+<li>右上の「保存」を押します</li>
+</ol>
+<figure><a href="images/02_settings_apikey.png" target="_blank" rel="noopener"><img src="images/02_settings_apikey.png" alt="設定画面の接続先とAPIキー欄（キーは伏せ字で表示されます）" loading="lazy"></a><figcaption>設定画面の接続先とAPIキー欄（キーは伏せ字で表示されます）</figcaption></figure>
+<p>ベースURL・モデル名は、通常は変更不要です。</p>
+<blockquote><p>欧州（EEA）・英国・スイスでは、Gemini の無料枠が使えません。有料のAPIキーを用意してください。</p></blockquote>
+<hr>
+<h2 id="2-画面の基本操作">2. 画面の基本操作</h2>
+<h3 id="21-ホーム画面">2.1 ホーム画面</h3>
+<p>10個の機能が並んでいます。クリックするとその機能の画面が開きます。</p>
+<figure><a href="images/03_home.png" target="_blank" rel="noopener"><img src="images/03_home.png" alt="ホーム画面" loading="lazy"></a><figcaption>ホーム画面</figcaption></figure>
+<div class="table"><table><thead><tr><th>番号</th><th>機能</th><th>AI</th></tr></thead><tbody><tr><td>1</td><td>キャラクター生成</td><td>使う</td></tr><tr><td>2</td><td>設定画（正面・背面）</td><td>使う</td></tr><tr><td>3</td><td>ピクセルアート化</td><td>使う</td></tr><tr><td>4</td><td>4方向直立画像</td><td>使う</td></tr><tr><td>5</td><td>歩行スプライト</td><td>使う</td></tr><tr><td>6</td><td>定型行動スプライト</td><td>使う</td></tr><tr><td>7</td><td>自由行動スプライト</td><td>使う</td></tr><tr><td>8</td><td>イベント画像生成</td><td>使う</td></tr><tr><td>9</td><td>分割・透明化</td><td>使わない</td></tr><tr><td>10</td><td>ツクール形式に変換</td><td>使わない</td></tr></tbody></table></div>
+<h3 id="22-画面の並び">2.2 画面の並び</h3>
+<p>ウィンドウの幅が十分にあると（横 1100 以上）、各機能の画面は <strong>左に入力（設定と生成ボタン）、右に結果</strong> の2列になり、それぞれ別にスクロールします。ウィンドウを狭くすると、入力の下に結果が並ぶ1列になります。起動時のウィンドウは 1440×900（画面が小さければ画面に収まる大きさ）です。</p>
+<h3 id="23-画面右上のボタン">2.3 画面右上のボタン</h3>
+<div class="table"><table><thead><tr><th>ボタン</th><th>内容</th></tr></thead><tbody><tr><td>🏠 ホーム</td><td>ホーム画面に戻ります（未保存の結果があれば確認が出ます）</td></tr><tr><td>⚙️ 設定</td><td>設定画面を開きます</td></tr><tr><td>通常／高品質</td><td>画像生成に「高品質モデル」を使うかを切り替えます（設定画面で高品質モデルを指定したときだけ使えます。料金は高めです）</td></tr><tr><td>接続先の切り替え</td><td>Gemini API と Vertex AI の両方を設定したときだけ表示されます</td></tr><tr><td>スタイル</td><td>画風（<a href="#51-スタイル画風">5.1</a>）を切り替えます。設定画・4方向・歩行・定型行動・自由行動・イベント画像の画面にあります</td></tr></tbody></table></div>
+<figure><a href="images/04_appbar.png" target="_blank" rel="noopener"><img src="images/04_appbar.png" alt="画面右上のボタン（左から 接続先・通常／高品質・スタイル・ホーム・設定）" loading="lazy"></a><figcaption>画面右上のボタン（左から 接続先・通常／高品質・スタイル・ホーム・設定）</figcaption></figure>
+<h3 id="24-画像の読み込み">2.4 画像の読み込み</h3>
+<p>画像の欄（「元絵」など）には、次のどれかで画像を入れます。</p>
+<ul>
+<li>欄をクリックしてファイルを選ぶ</li>
+<li>画像ファイルを欄にドラッグ＆ドロップする（欄以外の場所に落とすと、その画面の元絵の欄に入ります）</li>
+<li>画像をコピーしてから「クリップボードから貼り付け」、または Ctrl+V</li>
+</ul>
+<figure><a href="images/05_image_picker.png" target="_blank" rel="noopener"><img src="images/05_image_picker.png" alt="画像の欄（上: 画像を入れた状態、下: 未選択の状態）" loading="lazy"></a><figcaption>画像の欄（上: 画像を入れた状態、下: 未選択の状態）</figcaption></figure>
+<h3 id="25-生成結果の操作">2.5 生成結果の操作</h3>
+<p>生成が終わると、結果の下に次のボタンが出ます。</p>
+<figure><a href="images/06_result_buttons.png" target="_blank" rel="noopener"><img src="images/06_result_buttons.png" alt="生成結果の下のボタン" loading="lazy"></a><figcaption>生成結果の下のボタン</figcaption></figure>
+<div class="table"><table><thead><tr><th>ボタン</th><th>内容</th></tr></thead><tbody><tr><td>保存</td><td>保存先フォルダに保存します（ファイル名の先頭に日時が付きます）。保存すると「保存済み」になります</td></tr><tr><td>共有</td><td>他のアプリに画像を渡します</td></tr><tr><td>拡大</td><td>大きく表示します</td></tr><tr><td>報告</td><td>不適切な結果を開発者に報告します（<a href="#82-不適切な結果の報告">8.2</a>）</td></tr><tr><td>この画像で次のステップへ</td><td>結果を自動で保存してから、選んだ機能の画面に画像を引き継ぎます</td></tr></tbody></table></div>
+<ul>
+<li>未保存の結果があるまま生成し直したり画面を離れたりすると、「保存して実行／保存せず実行／キャンセル」の確認が出ます</li>
+<li>生成中は「キャンセル」で止められます</li>
+<li>保存先の既定は「ピクチャ\CharaRig」です（設定画面で変更できます）</li>
+</ul>
+<hr>
+<h2 id="3-おすすめの作り方">3. おすすめの作り方</h2>
+<h3 id="31-キャラクターのスプライト一式を作る">3.1 キャラクターのスプライト一式を作る</h3>
+<pre><code>（1. キャラクター生成 または 手持ちのイラスト）
+  → 2. 設定画（正面・背面）
+  → 4. 4方向直立画像
+  → 5. 歩行スプライト
+  → 6. 定型行動 / 7. 自由行動</code></pre>
+<ul>
+<li><strong>設定画を先に作るのがおすすめです。</strong> 設定画は角度のない正面・背面の絵で、これを使うと元絵の角度やポーズに引っ張られにくくなります</li>
+<li>作った設定画は、アプリを閉じるまで、4方向・歩行・ピクセルアート化・行動・イベント画像の各画面で自動的に使われます</li>
+</ul>
+<h3 id="32-ツクールウディタ用の歩行グラフィックを作る">3.2 ツクール・ウディタ用の歩行グラフィックを作る</h3>
+<ol>
+<li>4方向直立画像または歩行スプライトの画面で、「向き」を <strong>正面・左右・背面（ツクール向け）</strong> にする（両画面で共通の設定です）</li>
+<li>歩行スプライトを生成する</li>
+<li>結果の下の「<strong>ツクール形式で書き出し</strong>」を押し、1コマの大きさを選んで保存する</li>
+<li>ツクールのプロジェクトの <code>img/characters</code> フォルダに保存する</li>
+</ol>
+<p>詳しくは <a href="#45-歩行スプライト">4.5</a> と <a href="#410-ツクール形式に変換aiなし">4.10</a> を参照してください。</p>
+<hr>
+<h2 id="4-各機能の使い方">4. 各機能の使い方</h2>
+<h3 id="41-キャラクター生成">4.1 キャラクター生成</h3>
+<p>文章からキャラクターの画像を作ります。</p>
+<ol>
+<li>「キャラクターの説明」を入力（例: 青い髪の女性エルフ、魔法使いの衣装、杖を持っている）</li>
+<li>「生成」を押す</li>
+</ol>
+<figure><a href="images/c01_character.png" target="_blank" rel="noopener"><img src="images/c01_character.png" alt="キャラクター生成（左に入力、右に結果）" loading="lazy"></a><figcaption>キャラクター生成（左に入力、右に結果）</figcaption></figure>
+<h3 id="42-設定画正面背面">4.2 設定画（正面・背面）</h3>
+<p>元絵から、角度のない真正面・真後ろの設定画（左=正面、右=背面の1枚）を作ります。</p>
+<ol>
+<li>「元絵（必須）」を入れる。背中の作りが分かる画像があれば「背面参照画像（任意）」にも入れる</li>
+<li>必要なら「画風見本」（<a href="#56-画風見本">5.6</a>）や解像度（標準 / 2K / 4K）を選ぶ</li>
+<li>「設定画を生成」を押す</li>
+</ol>
+<figure><a href="images/07_design_sheet.png" target="_blank" rel="noopener"><img src="images/07_design_sheet.png" alt="設定画の結果と「正面・背面ごとにやり直す・保存」" loading="lazy"></a><figcaption>設定画の結果と「正面・背面ごとにやり直す・保存」</figcaption></figure>
+<ul>
+<li>「正面・背面ごとにやり直す・保存」で、片側だけを追加の指示付きで作り直せます（例: リボンを左側に / 背中の編み上げを描く）</li>
+<li>「この設定画で4方向直立画像へ」「この設定画で歩行スプライトへ」で次の画面に進めます</li>
+<li>保存済みの設定画は「設定画ファイルを読み込む」で読み込めます</li>
+</ul>
+<h3 id="43-ピクセルアート化">4.3 ピクセルアート化</h3>
+<p>画像をクォータービューのドット絵に変換します。元絵か設定画を入れて「ピクセルアート化」を押します。</p>
+<figure><a href="images/c03_pixel_art.png" target="_blank" rel="noopener"><img src="images/c03_pixel_art.png" alt="ピクセルアート化の結果" loading="lazy"></a><figcaption>ピクセルアート化の結果</figcaption></figure>
+<p>生成結果の下の <strong>「ドット化（AIを使わない仕上げ）」</strong> で、本物のドット絵に描き直せます。AIは使わないので、何度変えても料金や無料版の回数はかかりません。</p>
+<ul>
+<li><strong>細かさ</strong>: キャラの高さのドット数（32 / 48 / 64 / 96 / 128 / 256 / 512）。等身のある絵柄なら 64〜128、デフォルメなら 32〜64 が目安です。512 はほぼ元の絵のままの細かさです</li>
+<li><strong>色数</strong>: 16 / 32 / 64 / 制限なし。少ない色数でも、肌や目など面積の小さい色が残るようにまとめます</li>
+<li><strong>輪郭</strong>: なし／弱／強 から選びます。<ul>
+<li>弱: キャラの外側に、元の色を暗くした1ドットの輪郭を付けます（柔らかい仕上がり）</li>
+<li>強: 外側の輪郭を黒に近い色にし、元の絵の線（目・髪・服の線など）を消さずに縮めます（ドット絵らしく締まった仕上がり）</li>
+</ul></li>
+<li><strong>保存の倍率</strong>: 等倍（ドット数そのまま。ゲームエンジン用）か、2 / 4 / 8倍（確認・掲載用。ドットの角はぼかしません）。背景は透明で保存されます</li>
+</ul>
+<figure><a href="images/07b_dot_convert.png" target="_blank" rel="noopener"><img src="images/07b_dot_convert.png" alt="ドット化（64ドット・32色・輪郭 強）。透明な部分が分かるよう、緑の上に表示されます" loading="lazy"></a><figcaption>ドット化（64ドット・32色・輪郭 強）。透明な部分が分かるよう、緑の上に表示されます</figcaption></figure>
+<h3 id="44-4方向直立画像">4.4 4方向直立画像</h3>
+<p>4方向の立ち絵を作ります。マネキン（灰色の人形）をキャラクターとして描き直すので、向きが崩れにくくなっています。</p>
+<ol>
+<li>設定画を使うか、「正面画像」を入れる。必要なら「背面参照画像（任意）」も入れる</li>
+<li>「向き」を選ぶ: <strong>斜め4方向</strong>（クォータービュー）／<strong>正面・左右・背面（ツクール向け）</strong></li>
+<li>「生成方式」を選ぶ<ul>
+<li><strong>1方向ずつ（4回）</strong>: 向きごとに作ります。崩れた向きだけやり直せます。「生成する向き」で一部の向きだけ作ることもできます</li>
+<li><strong>一括（1回）</strong>: 4方向をまとめて作ります。4方向の色が揃います</li>
+</ul></li>
+<li>「4方向直立画像を生成」を押す</li>
+</ol>
+<ul>
+<li>「向きごとの調整」で、向きごとに「やり直す」（追加の指示付き）、「反転で代用」（反対の向きを左右反転して使う。左右対称なキャラ向け）、保存ができます</li>
+<li>「この4方向を基準画像にして歩行スプライトへ」で、結果を歩行スプライトの基準画像として引き継げます</li>
+<li>「自動チェック」がオンだと、向き・顔の有無をAIで判定し、不合格なら自動でやり直します（その分の呼び出しが増えます）</li>
+</ul>
+<figure><a href="images/08_directional.png" target="_blank" rel="noopener"><img src="images/08_directional.png" alt="4方向直立画像（正面・左右・背面）と「向きごとの調整」" loading="lazy"></a><figcaption>4方向直立画像（正面・左右・背面）と「向きごとの調整」</figcaption></figure>
+<h3 id="45-歩行スプライト">4.5 歩行スプライト</h3>
+<p>4方向 × 4コマの歩行アニメーションを作ります。</p>
+<ol>
+<li>設定画を使うか、「元絵」を入れる（設定画を使わないときは「向き別の基準画像」に4方向立ち絵の結果を入れると向きが合いやすくなります）</li>
+<li>「向き」を選ぶ（4.4 と共通）</li>
+<li>「生成方式」を選ぶ<ul>
+<li><strong>1コマずつ（16回）</strong>: 1コマごとの完成度が最も高く、崩れたコマだけやり直せます</li>
+<li><strong>1方向ずつ（4回）</strong>: 向きごとに4コマをまとめて作ります。その向きの4コマの色が揃います</li>
+</ul></li>
+<li>「歩行スプライトを生成」を押す</li>
+</ol>
+<figure><a href="images/09_walking_settings.png" target="_blank" rel="noopener"><img src="images/09_walking_settings.png" alt="歩行スプライトの「向き」と「生成方式」" loading="lazy"></a><figcaption>歩行スプライトの「向き」と「生成方式」</figcaption></figure>
+<ul>
+<li>「向きごとの調整」「コマごとの一覧」で、向き・コマ単位でやり直せます。コマの一覧では、見本のマネキンと並べて見比べられます</li>
+<li>「自動チェック」がオンだと、各コマを判定し、不合格のコマだけ自動で作り直します</li>
+</ul>
+<figure><a href="images/10_walking_result.png" target="_blank" rel="noopener"><img src="images/10_walking_result.png" alt="コマごとの一覧（見本のマネキンと並べた表示）" loading="lazy"></a><figcaption>コマごとの一覧（見本のマネキンと並べた表示）</figcaption></figure>
+<ul>
+<li><strong>ツクール形式で書き出し</strong>: 向きが「正面・左右・背面」で4方向そろうと、保存ボタンの並びに出ます<ul>
+<li>1コマの大きさ: MV/MZ 標準（48×48）・MV/MZ 縦長（48×64）・VX Ace 標準（32×32）・VX Ace 縦長（32×48）</li>
+<li>各向きの1〜3コマ目を使い、背景を透明にした横3コマ × 縦4方向の画像を作ります</li>
+<li>保存時のファイル名は、元絵（または設定画）のファイル名の先頭に <code>$</code> を付けたものになります。<strong>先頭の <code>$</code> は消さないでください</strong>（1キャラ用の画像として読み込まれます）</li>
+</ul></li>
+</ul>
+<figure><a href="images/11_rpgmaker_export.png" target="_blank" rel="noopener"><img src="images/11_rpgmaker_export.png" alt="ツクール形式で書き出し（1コマの大きさとプレビュー）" loading="lazy"></a><figcaption>ツクール形式で書き出し（1コマの大きさとプレビュー）</figcaption></figure>
+<h3 id="46-定型行動スプライト">4.6 定型行動スプライト</h3>
+<p>用意された行動から選んで、4コマの動きを作ります（2×2 に並んだシートになります）。</p>
+<ol>
+<li>設定画を使うか、「元絵」を入れる</li>
+<li>行動を選ぶ（7カテゴリ・91種）</li>
+<li>「定型行動スプライトを生成」を押す</li>
+<li>気になるコマは「<strong>コマごとの調整</strong>」で「やり直す」を押し、追加の指示（例: 剣の軌跡のエフェクトを消す）を入れて作り直せます</li>
+</ol>
+<figure><a href="images/12_predefined.png" target="_blank" rel="noopener"><img src="images/12_predefined.png" alt="定型行動（剣で攻撃）の結果と「コマごとの調整」" loading="lazy"></a><figcaption>定型行動（剣で攻撃）の結果と「コマごとの調整」</figcaption></figure>
+<ul>
+<li><strong>繰り返す動き</strong>: オンにすると、4コマ目から1コマ目へつながり、くり返し再生できる動きになります（飲む・待機など）。オフにすると始まりから終わりまで1回きりの動きになり、4コマ目が最後のポーズになります（攻撃・倒れるなど）。行動を選ぶと、その行動に合うほうに切り替わります（下の表の＊は1回きりが既定の行動）。変えることもできます</li>
+<li>行動ごとに4コマの動きの流れ（例: 剣で攻撃 = 構え → 振りかぶる → 振り抜く → 振り終わり）をAIに伝えています</li>
+<li>行動は画面の左向きで描きます。元絵が右向きのときは、オプションの「<strong>反対向きに反転元画像を使う</strong>」（自動／元画像は左向き／元画像は右向き／使わない）で、元絵を左右反転して渡し向きを揃えます（設定画を使うときは出ません）</li>
+<li>「コマごとの調整」の「<strong>左右反転</strong>」でそのコマだけ、「<strong>すべて左右反転</strong>」で全コマを反転できます（右向き版を作るとき。AIは使いません）</li>
+</ul>
+<div class="table"><table><thead><tr><th>カテゴリ</th><th>行動（＊は1回きりが既定）</th></tr></thead><tbody><tr><td>睡眠</td><td>睡眠 / ベッドで寝る / 布団で寝る / 居眠り / 寝袋で寝る / 目を覚ます＊ / あくび＊</td></tr><tr><td>食事</td><td>食事 / 座って食事 / 軽食 / ディナー / おにぎりを食べる / 麺をすする / 骨付き肉にかぶりつく / スープを飲む / 果物をかじる</td></tr><tr><td>飲む</td><td>コップで飲む / グラスで飲む / ビンで飲む / 盃で飲む / ジョッキで飲む / 樽ジョッキで飲む / 樽で飲む / ティーカップで飲む / 水筒で飲む / ポーションを飲む＊ / ストローで飲む</td></tr><tr><td>日常その他</td><td>会話 / 座る＊ / 手を振る / お辞儀＊ / 拍手 / 指さす＊ / 手招き / ジャンプ＊ / 読書 / ほうきで掃く / ストレッチ</td></tr><tr><td>戦闘</td><td>剣で攻撃＊ / 弓で攻撃＊ / 魔法詠唱 / 防御＊ / 被ダメージ＊ / 倒れる＊ / 槍で突く＊ / 斧を振り下ろす＊ / 殴る＊ / 蹴る＊ / 魔法を放つ＊ / 回復魔法 / 戦闘待機 / 力をためる / 回避＊ / 勝利ポーズ＊ / 拳銃を撃つ＊ / ライフルで狙う＊ / 連射する / 二丁拳銃＊ / リロード＊ / 銃を構えて待機 / 光線銃を撃つ＊ / 光の剣で斬る＊ / エネルギー砲を撃つ＊ / バリアを張る＊ / ジェットパックで浮く / サイバー端末を操作</td></tr><tr><td>育成</td><td>肉体トレーニング / 知的学習 / 美容トレーニング / 瞑想 / 素振り / 腕立て伏せ / ダンスの練習 / 歌の練習 / 楽器の練習 / 料理の練習</td></tr><tr><td>感情</td><td>笑う / 泣く / 喜ぶ / 悲しむ / 怒る / 驚く＊ / 照れる / 考え込む / うなずく / 首を横に振る / 困る / ほっとする＊ / 落ち込む / 得意げ / おびえる</td></tr></tbody></table></div>
+<h3 id="47-自由行動スプライト">4.7 自由行動スプライト</h3>
+<p>行動を文章で指定して動きを作ります。</p>
+<ol>
+<li>設定画を使うか、「元絵」を入れる</li>
+<li>「行動の説明」を入力（例: 剣を振り下ろす攻撃モーション）</li>
+<li>「コマ数」（1〜32）と「WAVE数」（1〜10。続く動作を何枚のシートに分けるか）を入れる</li>
+<li>「自由行動スプライトを生成」を押す</li>
+</ol>
+<ul>
+<li>コマは正方形のマスに並びます（4コマまでは2列、それより多いと4列）</li>
+<li>WAVE ごとに「コマごとの調整」でやり直せます</li>
+<li>向きの揃え方（反対向きに反転元画像を使う）と、コマの「左右反転」「すべて左右反転」は定型行動と同じです</li>
+</ul>
+<figure><a href="images/14_custom.png" target="_blank" rel="noopener"><img src="images/14_custom.png" alt="自由行動（ほうきにまたがって空を飛ぶ・4コマ）" loading="lazy"></a><figcaption>自由行動（ほうきにまたがって空を飛ぶ・4コマ）</figcaption></figure>
+<h3 id="48-イベント画像生成">4.8 イベント画像生成</h3>
+<p>ゲームのイベントCG（スチル）を作ります。キャラクターのポーズをマネキンで指定し、画角・寄り・表情・背景を選びます。</p>
+<figure><a href="images/15_illustration.png" target="_blank" rel="noopener"><img src="images/15_illustration.png" alt="イベント画像（横長 16:9・膝上・ポーズ見本「剣を構える」・場面の背景）" loading="lazy"></a><figcaption>イベント画像（横長 16:9・膝上・ポーズ見本「剣を構える」・場面の背景）</figcaption></figure>
+<ul>
+<li><strong>画角</strong>: 「ポーズに合わせる」（縦長 4:5 / 横長 5:4。マネキンを使わなければ正方形）／<strong>横長 16:9</strong>（ノベル・ADV向け）／<strong>横長 4:3</strong>（ツクールMV/MZ の画面 816×624 に近い）</li>
+<li><strong>寄り</strong>: <strong>全身</strong>／<strong>膝上</strong>／<strong>バストアップ</strong>。マネキンを使うときは、マネキンもその寄りで下端を切って渡すので、プレビューのとおりの構図になります（上下反転したポーズでは全身になります）</li>
+<li><strong>参考画像</strong>: 元絵、または設定画。設定画があるときは「衣装のみ参考にする」で、設定画のキャラクターに元絵の衣装を着せることもできます</li>
+<li><strong>体の向き</strong>: 指定すると、元絵の向きより優先します</li>
+<li><strong>ポーズ見本（マネキン）</strong>: プリセットから選ぶか、「ポーズを作る（マネキンを動かす）」で自分で作れます。作ったポーズは保存して再利用できます<ul>
+<li>ポーズエディタの「体全体を回す」は、ボタン（15° / 45° / 90° ずつ）でもスライダー（前へ倒す・左へ倒す・左へ回る）でも回せます。スライダーは、つかんだときの姿勢から動かした角度だけ回り、離すと0に戻ります</li>
+<li>マネキンのすぐ下の「全体を表示」「左右を入れ替え」「直立に戻す」「最初に戻す」で、表示や姿勢を元に戻せます</li>
+</ul></li>
+</ul>
+<figure><a href="images/16_pose_editor.png" target="_blank" rel="noopener"><img src="images/16_pose_editor.png" alt="ポーズエディタ（マネキンを動かしてポーズを作る）" loading="lazy"></a><figcaption>ポーズエディタ（マネキンを動かしてポーズを作る）</figcaption></figure>
+<ul>
+<li><strong>ポーズの説明・表情・追加プロンプト</strong>: 選択肢から選ぶか自由に入力します</li>
+<li><strong>背景</strong>: 「単色背景」か「シチュエーション（場面）を描写」を選びます</li>
+<li><strong>解像度</strong>: 標準 / 2K / 4K</li>
+<li>生成後、「このプロンプトを保存（画像と一緒に）」で、設定を「保存したプロンプト」から呼び出せます</li>
+<li>「画風見本」を指定していれば、「画風を合わせ直す」で結果を見本の画風に描き直せます</li>
+</ul>
+<h3 id="49-分割透明化aiなし">4.9 分割・透明化（AIなし）</h3>
+<p>スプライトシートをコマに分け、背景を透明にします。</p>
+<ol>
+<li>「スプライトシート（必須）」を入れる</li>
+<li>「列数」「行数」を入れ、必要ならグリッド線をドラッグして分割位置を調整する（列数・行数は次に開いたときも残ります）</li>
+<li>透明化の設定を選ぶ<ul>
+<li><strong>透明化対象色</strong>: 生成時の背景色（白・マゼンタ・緑など）に合わせます。「画像から拾う」で画像をクリックして選べます</li>
+<li><strong>許容範囲</strong>（0〜80）: 大きいほど背景色に近い色も透明になります（大きすぎるとキャラの薄い色も消えます）。<strong>0</strong> は透明にする色と完全に同じ色だけを抜き、縁のなめらか処理もしません（自分で描いたドット絵など向け）</li>
+<li><strong>周辺のみ透明化</strong>: 画像の端から繋がった背景だけを消し、内側の白は残します</li>
+<li><strong>エッジスムーシング</strong>: キャラの縁に混ざった背景色（白でもマゼンタ・緑でも）を取り除き、縁を半透明にしてなめらかにします。縁の数ドットに残る背景色の照り返しも抑えます</li>
+<li><strong>トリミング</strong>: 透明部分を切り詰めます</li>
+</ul></li>
+<li>「分割実行」を押す。コマごと・まとめての保存、左右反転したコピーの保存ができます</li>
+</ol>
+<figure><a href="images/17_split.png" target="_blank" rel="noopener"><img src="images/17_split.png" alt="分割・透明化（2×2 のシートを分けた結果）" loading="lazy"></a><figcaption>分割・透明化（2×2 のシートを分けた結果）</figcaption></figure>
+<h4 id="手直し抜く戻す">手直し（抜く・戻す）</h4>
+<p>自動の透明化で残った背景（腕と体の間の隙間など）や、背景といっしょに消えたキャラの白い部分（白い服や鎧など）は、コマをクリックするか、コマの右の杖のボタン（残った背景を抜く・欠けた所を戻す）で開く拡大画面で直せます。</p>
+<ol>
+<li>上のボタンで「<strong>抜く</strong>」（透明にする）か「<strong>戻す</strong>」（元の色に戻す）を選ぶ（「見る」はドラッグで画面を動かすだけ）</li>
+<li><strong>範囲</strong>を選ぶ<ul>
+<li><strong>つながり</strong>: タップした色につながった範囲</li>
+<li><strong>同じ色を全部</strong>: タップした色と同じ色を、離れた所も含めて画像全体から</li>
+<li><strong>1ドット</strong>: タップ・なぞった画素だけ（周りや縁には手を付けません。なぞった分は1回の手直しとして取り消せます）</li>
+</ul></li>
+<li>必要なら<strong>許容範囲</strong>（タップした色からどれだけ違う色まで含めるか。0 は完全に同じ色だけ）を変えて、直したい所をタップする</li>
+</ol>
+<ul>
+<li>縁の混ざった色をタップしても、透明化対象色に近ければ自動の透明化と同じ基準で範囲を決めるので、隣の明るい服や輪郭線の向こうのハイライトまでは抜けません</li>
+<li>マウスを載せている画素に枠が出ます。ホイールで拡大できます</li>
+<li><strong>確認用の背景</strong>（市松・マゼンタ・緑・青・黒・白）を選べます。鮮やかな色の上に置くと、抜き残しや半透明の縁、欠けた所が見つけやすくなります</li>
+<li>手直しをしたコマには「手直し N」と表示されます。手直しは、同じ枚数で分割し直しても残ります</li>
+</ul>
+<figure><a href="images/17b_spot_edit.png" target="_blank" rel="noopener"><img src="images/17b_spot_edit.png" alt="手直しの画面（確認用の背景をマゼンタにした状態）。白い鎧の一部が背景といっしょに抜けて、マゼンタが見えています。このような所は「戻す」でタップすると元の色に戻ります" loading="lazy"></a><figcaption>手直しの画面（確認用の背景をマゼンタにした状態）。白い鎧の一部が背景といっしょに抜けて、マゼンタが見えています。このような所は「戻す」でタップすると元の色に戻ります</figcaption></figure>
+<h3 id="410-ツクール形式に変換aiなし">4.10 ツクール形式に変換（AIなし）</h3>
+<p>保存済みの歩行シートを、ツクールMV/MZ・VX Ace の1キャラ用キャラクター画像（横3コマ × 縦4方向）に変換します。</p>
+<ol>
+<li>「歩行シート（4行）」を入れる。シートは上から <strong>正面（下向き）・左向き・右向き・背面（上向き）</strong> の順に並んでいる必要があります（歩行スプライトを「正面・左右・背面」で作ったシートはこの並びです）</li>
+<li>1行のコマ数は画像から自動で判定されます。シートの上に分け方の赤い線が出るので、<strong>1マスに1体ずつ入っているか</strong>確認してください（判定できないときだけ、コマ数を選ぶ欄が出ます）</li>
+<li>「ツクール形式で書き出し」を押し、1コマの大きさを選んで保存する（<a href="#45-歩行スプライト">4.5</a> と同じ画面です）</li>
+</ol>
+<figure><a href="images/18_rpgmaker_convert.png" target="_blank" rel="noopener"><img src="images/18_rpgmaker_convert.png" alt="ツクール形式に変換（シートの上の赤い線が分け方）" loading="lazy"></a><figcaption>ツクール形式に変換（シートの上の赤い線が分け方）</figcaption></figure>
+<ul>
+<li>背景色は画像の端から塗りつぶして透明にします。キャラクターに囲まれた背景（髪の輪の中など）も、背景とほぼ同じ色なら透明になります</li>
+<li>保存時のファイル名は、読み込んだシートのファイル名の先頭に <code>$</code> を付けたものになります</li>
+</ul>
+<hr>
+<h2 id="5-どの画面にもある設定">5. どの画面にもある設定</h2>
+<h3 id="51-スタイル画風">5.1 スタイル（画風）</h3>
+<p>画面右上のスタイルボタンで切り替えます。選んだスタイルはアプリ全体に保存されます。</p>
+<ul>
+<li><strong>デフォルメ</strong>（既定）: 2〜3頭身のかわいい絵柄</li>
+<li><strong>ベース画像踏襲</strong>: 元絵の画風をそのまま使う</li>
+<li><strong>ドット絵（等身維持）</strong>: 頭身を保ったドット絵</li>
+<li><strong>アニメ調</strong></li>
+<li><strong>ドット絵で描く</strong>: オンにすると、選んだスタイルをドット絵で描きます</li>
+</ul>
+<figure><a href="images/20_style_menu.png" target="_blank" rel="noopener"><img src="images/20_style_menu.png" alt="スタイルのメニュー" loading="lazy"></a><figcaption>スタイルのメニュー</figcaption></figure>
+<h3 id="52-オプション">5.2 オプション</h3>
+<p>各画面の「オプション」を開くと設定できます。</p>
+<ul>
+<li><strong>背景色</strong>: 白・緑・黒、または任意の色。透明にしたいときは、キャラクターに使われていない色を選ぶと抜きやすくなります</li>
+<li><strong>足元の装飾を除去</strong>: 影・グリッド・床を描かせません</li>
+<li><strong>保存サイズ（1コマ）</strong>: 保存するときに1コマがこの高さになるよう縮小して保存します（原寸 / 640 / 320 / 160）。画面の表示や次の機能へ渡す画像は、生成されたままの大きさです</li>
+</ul>
+<figure><a href="images/19_options.png" target="_blank" rel="noopener"><img src="images/19_options.png" alt="「オプション」を開いた状態（定型行動の画面）" loading="lazy"></a><figcaption>「オプション」を開いた状態（定型行動の画面）</figcaption></figure>
+<h3 id="53-プロンプトの確認編集製品版のみ">5.3 プロンプトの確認・編集（製品版のみ）</h3>
+<p>各画面の「▼ プロンプト」を開くと、AIに送る指示文を確認・編集できます。編集すると「（カスタム）」と表示され、「リセット」で元に戻せます。スタイルを変えると自動で元に戻ります。</p>
+<h3 id="54-やり直しの追加の指示">5.4 やり直しの追加の指示</h3>
+<p>「やり直す」を押すと、追加の指示を入力できます（空欄なら通常どおり作り直します）。色・小物・顔の有無など見た目の修正に向いています。歩行の足の前後や向きはマネキンで決まるため、指示では変わりにくいです。</p>
+<figure><a href="images/13_retry_note.png" target="_blank" rel="noopener"><img src="images/13_retry_note.png" alt="やり直しの追加の指示" loading="lazy"></a><figcaption>やり直しの追加の指示</figcaption></figure>
+<h3 id="55-拡大表示での見比べ">5.5 拡大表示での見比べ</h3>
+<p>コマ・向きのサムネイルをダブルクリックすると拡大表示になり、←→キーで前後のコマに移りながら、そのまま作り直せます。</p>
+<h3 id="56-画風見本">5.6 画風見本</h3>
+<p>設定画とイベント画像の画面で、画風（線・塗り・陰影）を揃えたい画像を「画風見本」として指定できます。キャラクターの見た目と色は設定画・元絵から取ります。見本はアプリを閉じても残ります。</p>
+<hr>
+<h2 id="6-設定画面">6. 設定画面</h2>
+<div class="table"><table><thead><tr><th>項目</th><th>内容</th></tr></thead><tbody><tr><td>接続先</td><td>Gemini API (AI Studio) / Vertex AI (GCP)</td></tr><tr><td>APIキー・ベースURL・モデル名</td><td>Gemini API の設定（通常はAPIキーだけ入れれば使えます）</td></tr><tr><td>プロジェクトID・リージョン・サービスアカウントJSON</td><td>Vertex AI の設定（Google Cloud のサービスアカウントが必要。上級者向け）</td></tr><tr><td>高品質モデル名（任意）</td><td>「高品質」スイッチをオンにしたときに使うモデル</td></tr><tr><td>チェック用モデル名（任意）</td><td>自動チェックに使うモデル（空欄なら生成用モデル）</td></tr><tr><td>保存先フォルダ</td><td>生成画像の保存先（未設定時: ピクチャ\CharaRig）。「フォルダを開く」で開けます</td></tr><tr><td>スプライトスタイル・ドット絵で描く</td><td><a href="#51-スタイル画風">5.1</a> と同じ</td></tr><tr><td>参照タイル画像</td><td>クォータービューの角度の基準にするタイル画像（全生成に使います。4方向・歩行の向きが「正面・左右・背面」のときは使いません）</td></tr><tr><td>利用上の注意</td><td>初回起動時の注意事項</td></tr><tr><td>不適切な生成の報告</td><td>報告フォームを開きます</td></tr></tbody></table></div>
+<p>変更したら右上の「保存」を押してください。</p>
+<hr>
+<h2 id="7-無料版について">7. 無料版について</h2>
+<p>無料版は、購入前に品質を確かめるための版です。ウィンドウとホーム画面のタイトルに「無料版」と表示されます。</p>
+<ul>
+<li><strong>AIを使う操作は通算10回まで</strong>試せます（生成・やり直し・画風の合わせ直しなど、1回の操作ごとに1回分）。残り回数はホーム画面の先頭に表示されます<ul>
+<li>失敗した操作も1回と数えます。ただし、安全のための仕組み（<a href="#81-生成の前後の安全チェック">8.1</a>）で止まり、画像が1枚もできなかった操作は数えません</li>
+</ul></li>
+<li><strong>分割・透明化、ツクール形式に変換は、回数の制限なく</strong>使えます</li>
+<li>プロンプトの確認・編集欄は表示されません</li>
+<li>生成は、ご自身のAPIキーで行います（Google の料金はご自身の契約に従います）</li>
+</ul>
+<figure><a href="images/21_trial_banner.png" target="_blank" rel="noopener"><img src="images/21_trial_banner.png" alt="無料版のホーム画面（残り回数の案内）" loading="lazy"></a><figcaption>無料版のホーム画面（残り回数の案内）</figcaption></figure>
+<hr>
+<h2 id="8-安全のための仕組みと報告">8. 安全のための仕組みと報告</h2>
+<h3 id="81-生成の前後の安全チェック">8.1 生成の前後の安全チェック</h3>
+<ul>
+<li>送る前に、明らかに不適切な表現が含まれていないかをアプリが確認します。含まれていると「利用できない表現が含まれています。内容を変更してください。」と表示され、送信されません</li>
+<li>Google 側の安全フィルタで止められた場合は「安全フィルタにより生成されませんでした。表現を変えてお試しください。」と表示されます。自動のやり直しは行いません</li>
+<li>同じ内容で何度も試すと、APIキーやGoogleアカウントの制限につながることがあります。表現を変えてください</li>
+</ul>
+<h3 id="82-不適切な結果の報告">8.2 不適切な結果の報告</h3>
+<p>生成結果の「報告」（または設定画面の「不適切な生成の報告」）を押すと、ブラウザで報告フォームが開きます。機能名・モデル名・アプリのバージョンは自動で入ります。製品版では「プロンプトをコピー」でプロンプトをフォームに貼り付けられます。<strong>画像は送られません。</strong></p>
+<figure><a href="images/22_report.png" target="_blank" rel="noopener"><img src="images/22_report.png" alt="報告のダイアログ" loading="lazy"></a><figcaption>報告のダイアログ</figcaption></figure>
+<hr>
+<h2 id="9-困ったときは">9. 困ったときは</h2>
+<div class="table"><table><thead><tr><th>症状</th><th>対処</th></tr></thead><tbody><tr><td>起動時に「WindowsによってPCが保護されました」と出る</td><td>「詳細情報」→「実行」で起動できます（別紙「起動時の警告への案内」）</td></tr><tr><td>「APIキーが設定されていません」</td><td>設定画面でAPIキーを入れて「保存」</td></tr><tr><td>「APIキーが無効か、アクセス権限がありません」</td><td>設定画面でAPIキーを確認してください（前後の空白などがないか）</td></tr><tr><td>「リクエスト制限に達しました」</td><td>利用量の上限（無料枠など）に達しました。しばらく待ってから試すか、有料枠を検討してください</td></tr><tr><td>「サーバーエラーが発生しました」</td><td>Google 側の一時的なエラーです。しばらく待ってから試してください</td></tr><tr><td>「リクエストが不正です」</td><td>指定した解像度や画像がモデルに合わない可能性があります。解像度を「標準」に戻す・画像を変えるなどして試してください</td></tr><tr><td>「エンドポイントまたはモデルが見つかりません」（Vertex AI）</td><td>リージョンを「global」にしてみてください</td></tr><tr><td>「エラーが発生しました: …」（SocketException など）</td><td>インターネット接続を確認してください</td></tr><tr><td>「利用できない表現が含まれています」</td><td>説明文・追加の指示から不適切と取られる表現を外してください</td></tr><tr><td>「安全フィルタにより生成されませんでした」</td><td>表現を変えて試してください（露出の多い衣装などで起きることがあります）</td></tr><tr><td>「画像を生成できませんでした」</td><td>説明やプロンプトを変えて、もう一度試してください</td></tr><tr><td>向きや足の前後が崩れる</td><td>設定画を作って使う／生成方式を「1コマずつ」にする／崩れたコマだけ「やり直す」</td></tr><tr><td>コマが隣のコマにはみ出す（行動）</td><td>「コマごとの調整」で、はみ出したコマを指示付きでやり直す（例: エフェクトを消す）</td></tr><tr><td>分割・透明化で背景の白が残る／キャラの白い部分まで消える</td><td>コマをクリックして拡大し、「抜く」「戻す」で手直ししてください（4.9）</td></tr><tr><td>ツクールで1マスに複数のキャラが表示される</td><td>「ツクール形式に変換」の赤い線で、1マスに1体ずつ入っているか確認してください</td></tr><tr><td>2K・4K を選んでも小さい画像が返る</td><td>使っているモデルが対応していない可能性があります（Vertex AI の一部のモデルなど）</td></tr><tr><td>無料版で「AI生成（10回）を使い切りました」</td><td>製品版をご購入ください。分割・透明化とツクール形式への変換は引き続き使えます</td></tr></tbody></table></div>
+<p>設定やログは <code>ドキュメント\CharaRig</code> フォルダにあります（自動チェックのログ: <code>logs\check_log.txt</code>）。</p>
+</main>
+</div>
+</body>
+</html>
